@@ -7,9 +7,6 @@ light_grey="░"*2
 grey="▒"*2
 dark_grey="▓"*2
 white=" "*2
-class sprite:
-	def __init__(self):
-		self.pokecenter=[black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black]["/red"+light_grey,"/green"+grey,grey,grey,grey,grey,grey,"/blue"+grey,dark_grey,grey,grey,grey,grey,grey,dark_grey,"/black"+black,black,black,black,black]
 screen=rgraphics.graphic()
 os.system("cls")
 fp=rgraphics.fpslimiter()
