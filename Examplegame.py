@@ -7,10 +7,13 @@ light_grey="░"*2
 grey="▒"*2
 dark_grey="▓"*2
 white=" "*2
+class sprite:
+	def __init__(self):
+		self.pokecenter=[black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black,black]["/red"+light_grey,"/green"+grey,grey,grey,grey,grey,grey,"/blue"+grey,dark_grey,grey,grey,grey,grey,grey,dark_grey,"/black"+black,black,black,black,black]
 screen=rgraphics.graphic()
 os.system("cls")
 fp=rgraphics.fpslimiter()
-content=[["","",black,black,"",""],["",black,black,black,black,""],["",black,black,black,black,""],["","",black,black,"",""]]
+content=[["","","/red"+black,black,"/reset",""],["",black,black,black,black,""],["",black,black,black,black,""],["","",black,black,"",""]]
 screen.init(38,83,light_grey)
 for obj in ["1","2","3","4","5","6","7"]:
 	globals()[obj]=rgraphics.graphic()
@@ -27,5 +30,5 @@ while True:
 		globals()[obj].stayin(screen,"bounce")
 	for obj in ["1","2","3","4","5","6","7"]:
 		globals()[obj].draw(screen)
-	screen.display()
-	fp.end(2000)
+	screen.display(colouring=True)
+	fp.end(60)

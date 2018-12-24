@@ -9,6 +9,17 @@ light_grey="░"*2
 grey="▒"*2
 dark_grey="▓"*2
 white=" "*2
+def colour(string):
+	string=string.replace("/black","\u001b[30m")
+	string=string.replace("/red","\u001b[31m")
+	string=string.replace("/green","\u001b[32m")
+	string=string.replace("/yellow","\u001b[33m")
+	string=string.replace("/blue","\u001b[34m")
+	string=string.replace("/magenta","\u001b[35m")
+	string=string.replace("/cyan","\u001b[36m")
+	string=string.replace("/white","\u001b[37m")
+	string=string.replace("/reset","\u001b[0m")
+	return string
 class graphic:
 	def __init__(self):
 		self.posx=0
@@ -17,11 +28,19 @@ class graphic:
 		self.speedy=0
 		self.content=[]
 	def draw(self,other):
+		roundedposx = round(self.posx)
+		roundedposy = round(self.posy)
 		for row in range(len(self.content)):
-			for px in range(len(self.content[row])):
+			currentrow = self.content[row]
+			currentposy = row+roundedposy
+			othercurrentrow = other.content[currentposy]
+			for px in range(len(currentrow)):
 				try:
-					if self.content[row][px]!="":
-						other.content[row+self.posy][px+self.posx]=self.content[row][px]
+					if currentrow[px]!="":
+						if "/reset" in currentrow[px]:
+							othercurrentrow[px+roundedposx]="/reset"+currentrow[px]
+						else:
+							othercurrentrow[px+roundedposx]=currentrow[px]
 				except:
 					pass
 	def init(self,height,width,color):
@@ -57,13 +76,15 @@ class graphic:
 	def move(self):
 		self.posx+=self.speedx
 		self.posy+=self.speedy
-	def display(self):
+	def display(self,colouring=False):
 		print("",end="\033[1;1H")
 		prerend=""
 		for row in self.content:
 			for px in row:
 				prerend+=px
 			prerend+=("\n")
+		if colouring==True:
+			prerend=colour(prerend)
 		sys.stdout.write(prerend)
 	def coldec(self,other):
 		for x in range(len(self.content)):
