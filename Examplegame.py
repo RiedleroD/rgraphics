@@ -1,26 +1,31 @@
 import rgraphics
-screen=rgraphics.screen()
-square=rgraphics.square()
-screen.color=white
-screen.height=16
-screen.width=16
-screen.init()
-square.height=19
-square.width=1
-square.posx=11
-square.posy=2
-square.speedy=1
-square.speedx=-1
-square.motionstyle="no0e"
-fpslimiter=rgraphics.fpslimiter()
-fps=0
-fpslimiter.start()
+import os
+import random
+rgraphics.intro()
+black="█"*2
+light_grey="░"*2
+grey="▒"*2
+dark_grey="▓"*2
+white=" "*2
+screen=rgraphics.graphic()
+os.system("cls")
+fp=rgraphics.fpslimiter()
+content=[["","",black,black,"",""],["",black,black,black,black,""],["",black,black,black,black,""],["","",black,black,"",""]]
+screen.init(38,83,light_grey)
+for obj in ["1","2","3","4","5","6","7"]:
+	globals()[obj]=rgraphics.graphic()
+	globals()[obj].content=content
+	globals()[obj].posx=random.randrange(5,75)
+	globals()[obj].posy=random.randrange(5,30)
+	globals()[obj].speedx=1
+	globals()[obj].speedy=1
 while True:
-	fps=str(round(fpslimiter.end(30)))
-	fpslimiter.start()
-	screen.init()
-	screen.content[16][16]=fps
-	square.motion(screen)
-	square.noob(screen)
-	square.draw(screen)
+	fp.start()
+	screen.clear(light_grey)
+	for obj in ["1","2","3","4","5","6","7"]:
+		globals()[obj].move()
+		globals()[obj].stayin(screen,"bounce")
+	for obj in ["1","2","3","4","5","6","7"]:
+		globals()[obj].draw(screen)
 	screen.display()
+	fp.end(2000)

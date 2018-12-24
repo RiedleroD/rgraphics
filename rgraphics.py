@@ -9,75 +9,92 @@ light_grey="░"*2
 grey="▒"*2
 dark_grey="▓"*2
 white=" "*2
-class square:
+class graphic:
 	def __init__(self):
-		self.color=black
-		self.height=1
-		self.width=1
 		self.posx=0
 		self.posy=0
 		self.speedx=0
 		self.speedy=0
-		self.motionstyle="Bounce"
-	def draw(self,scrn):
-		for x in range(self.height):
-			for y in range(self.width):
+		self.content=[]
+	def draw(self,other):
+		for row in range(len(self.content)):
+			for px in range(len(self.content[row])):
 				try:
-					scrn.content[x+self.posy][y+self.posx]=self.color
+					if self.content[row][px]!="":
+						other.content[row+self.posy][px+self.posx]=self.content[row][px]
 				except:
 					pass
-	def motion(self,scrn):
-		if self.motionstyle=="Bounce":
-			if self.posx+self.width-1==scrn.width or self.posx==0:
+	def init(self,height,width,color):
+		self.content=[]
+		for x in range(height+1):
+			precontent=[]
+			for y in range(width+1):
+				precontent.append(color)
+			self.content.append(precontent)
+	def stayin(self,other,type="none"):
+		if type=="none":
+			if self.posx<0:
+				self.posx=0
+			elif self.posx+len(self.content[0])>len(other.content[0]):
+				self.posx=len(other.content[0])-len(self.content)
+			if self.posy<0:
+				self.posy=0
+			elif self.posy+len(self.content)>len(other.content):
+				self.posy=len(other.content)-len(self.content)
+		elif type=="bounce":
+			if self.posx<0:
+				self.posx=0
 				self.speedx*=-1
-			if self.posy+self.height-1==scrn.height or self.posy==0:
+			elif self.posx+len(self.content[0])>len(other.content[0]):
+				self.posx=len(other.content[0])-len(self.content[0])
+				self.speedx*=-1
+			if self.posy<0:
+				self.posy=0
 				self.speedy*=-1
-		elif self.motionstyle=="none":
-			pass
-		else:
-			raise ValueError("No valid motionstyle for "+str(self)+".")
+			elif self.posy+len(self.content)>len(other.content):
+				self.posy=len(other.content)-len(self.content)
+				self.speedy*=-1
+	def move(self):
 		self.posx+=self.speedx
 		self.posy+=self.speedy
-	def noob(self,scrn):	#This stands actually for "no out of bounce". idk how to give this a better name...
-		if self.width<=scrn.width and self.height<=scrn.height:
-			while self.posx+self.width-1>scrn.width:
-				self.posx-=1
-			while self.posy+self.height-1>scrn.height:
-				self.posy-=1
-			while self.posx<0:
-				self.posx+=1
-			while self.posy<0:
-				self.posy+=1
-class screen:
-	def __init__(self):
-		self.color=white
-		self.content=[]
-		self.height=0
-		self.width=0
-	def init(self):
-		self.content=[]
-		for x in range(self.height+1):
-			precontent=[]
-			for y in range(self.width+1):
-				precontent.append(self.color)
-			self.content.append(precontent)
-	def display(self,overwrite=True):
-		endwrite=""
+	def display(self):
+		print("",end="\033[1;1H")
+		prerend=""
 		for row in self.content:
 			for px in row:
-				endwrite+=px
-			endwrite+=("\n")
-		if overwrite==True:
-			os.system("cls")
-		sys.stdout.write(endwrite)
+				prerend+=px
+			prerend+=("\n")
+		sys.stdout.write(prerend)
+	def coldec(self,other):
+		for x in range(len(self.content)):
+			for y in range(len(self.content[x])):
+				for a in range(len(other.content)):
+					for b in range(len(other.content[a])):
+						if round(x+self.posy)==round(a+other.posy):
+							if round(y+self.posx)==round(b+other.posx):
+								return True
+		return False
+	def bounceoff(self,other):
+		if self.coldec(other):
+			self.speedx*=-1
+			self.speedy*=-1
+	def clear(self,color):
+		for row in range(len(self.content)):
+			for col in range(len(self.content[row])):
+				if not self.content[row][col]==color:
+					self.content[row][col]=color
 class fpslimiter:
+	def __init__(self):
+		self.fps=0
+		self.starttime=time.time()
+		self.endtime=time.time()
 	def start(self):
 		self.starttime=time.time()
 	def end(self,maxfps=60):
 		while True:
 			self.endtime=time.time()
 			try:
-				self.fps=1/(self.endtime-self.starttime)
+				self.fps=round(1/(self.endtime-self.starttime))
 			except:
 				pass
 			else:
@@ -85,3 +102,10 @@ class fpslimiter:
 					pass
 				else:
 					return self.fps
+
+def intro():
+	os.system("cls")
+	r=graphic()
+	r.content=[[black*3+white+black+white+black*5+white*2+black+white+black*5+white+black*2],[black+white+black+white*8+black+white+black+white*8+black],[black*2+white*2+black+white+black*4+white+black+white+black+white+black*5+white+black+white],[black+white+black+white+black+white*6+black+white+black+white*8+black],[black+white+black+white+black+white+black*5+white*2+black*3+white+black*3+white*2+black]]
+	r.display()
+	time.sleep(1)
