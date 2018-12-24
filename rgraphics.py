@@ -4,29 +4,28 @@ import colorama
 import os
 import time
 colorama.init()
-black="█"*2
-light_grey="░"*2
-grey="▒"*2
-dark_grey="▓"*2
-white=" "*2
-def colour(string):
-	string=string.replace("/black","\u001b[30m")
-	string=string.replace("/red","\u001b[31m")
-	string=string.replace("/green","\u001b[32m")
-	string=string.replace("/yellow","\u001b[33m")
-	string=string.replace("/blue","\u001b[34m")
-	string=string.replace("/magenta","\u001b[35m")
-	string=string.replace("/cyan","\u001b[36m")
-	string=string.replace("/white","\u001b[37m")
-	string=string.replace("/reset","\u001b[0m")
-	return string
+formatdict={" ":"  ","B":"██","L":"░░","G":"▒▒","D":"▓▓","W":"  ","1":"\u001b[30m","2":"\u001b[31m","3":"\u001b[32m","4":"\u001b[33m","5":"\u001b[34m","6":"\u001b[35m","7":"\u001b[36m","8":"\u001b[37m","0":"\u001b[0m"}
+def dispform(inpot):
+	if inpot==list(inpot):
+		for row in range(len(inpot)):
+			for px in range(len(inpot[row])):
+				prepx=""
+				for char in range(len(inpot[row][px])):
+					prepx+=formatdict[inpot[row][px][char]]
+				inpot[row][px]=prepx
+	elif inpot==str(inpot):
+		preinpot=""
+		for char in range(len(inpot)):
+			preinpot+=formatdict[inpot[char]]
+		inpot=preinpot
+	return inpot
 class graphic:
 	def __init__(self):
 		self.posx=0
 		self.posy=0
 		self.speedx=0
 		self.speedy=0
-		self.content=[]
+		self.content=[[""]]
 	def draw(self,other):
 		roundedposx = round(self.posx)
 		roundedposy = round(self.posy)
@@ -37,19 +36,20 @@ class graphic:
 			for px in range(len(currentrow)):
 				try:
 					if currentrow[px]!="":
-						if "/reset" in currentrow[px]:
-							othercurrentrow[px+roundedposx]="/reset"+currentrow[px]
+						if "\u001b[0m" in currentrow[px]:
+							othercurrentrow[px+roundedposx]=currentrow[px]+"\u001b[0m"
 						else:
 							othercurrentrow[px+roundedposx]=currentrow[px]
 				except:
 					pass
-	def init(self,height,width,color):
+	def init(self,height,width,shade):
 		self.content=[]
 		for x in range(height+1):
 			precontent=[]
 			for y in range(width+1):
-				precontent.append(color)
+				precontent.append(shade)
 			self.content.append(precontent)
+		self.content=dispform(self.content)
 	def stayin(self,other,type="none"):
 		if type=="none":
 			if self.posx<0:
@@ -83,27 +83,12 @@ class graphic:
 			for px in row:
 				prerend+=px
 			prerend+=("\n")
-		if colouring==True:
-			prerend=colour(prerend)
 		sys.stdout.write(prerend)
-	def coldec(self,other):
-		for x in range(len(self.content)):
-			for y in range(len(self.content[x])):
-				for a in range(len(other.content)):
-					for b in range(len(other.content[a])):
-						if round(x+self.posy)==round(a+other.posy):
-							if round(y+self.posx)==round(b+other.posx):
-								return True
-		return False
-	def bounceoff(self,other):
-		if self.coldec(other):
-			self.speedx*=-1
-			self.speedy*=-1
-	def clear(self,color):
+	async def clear(self,shade):
+		shade=dispform(shade)
 		for row in range(len(self.content)):
 			for col in range(len(self.content[row])):
-				if not self.content[row][col]==color:
-					self.content[row][col]=color
+				self.content[row][col]=shade
 class fpslimiter:
 	def __init__(self):
 		self.fps=0
