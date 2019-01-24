@@ -4,7 +4,7 @@ import random
 import asyncio
 #rgraphics.intro()
 screen=rgraphics.graphic()
-os.system("cls")
+os.system("clear")
 fp=rgraphics.fpslimiter()
 content=[]
 for shade in ["B","D","G","L","W"," "]:

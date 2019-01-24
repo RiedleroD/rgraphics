@@ -1,9 +1,9 @@
 import sys
 import random
-import colorama
+#WINDOWS ONLY::import colorama
 import os
 import time
-colorama.init()
+#WINDOWS ONLY::colorama.init()
 formatdict={" ":"  ","B":"██","L":"░░","G":"▒▒","D":"▓▓","W":"  ","1":"\u001b[30m","2":"\u001b[31m","3":"\u001b[32m","4":"\u001b[33m","5":"\u001b[34m","6":"\u001b[35m","7":"\u001b[36m","8":"\u001b[37m","0":"\u001b[0m"}
 def dispform(inpot):
 	if inpot==list(inpot):
