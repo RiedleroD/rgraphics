@@ -1,9 +1,10 @@
 import sys
 import random
-#WINDOWS ONLY::import colorama
 import os
 import time
-#WINDOWS ONLY::colorama.init()
+if os.name=="nt":
+	import colorama
+	colorama.init()
 formatdict={" ":"  ","B":"██","L":"░░","G":"▒▒","D":"▓▓","W":"  ","1":"\u001b[30m","2":"\u001b[31m","3":"\u001b[32m","4":"\u001b[33m","5":"\u001b[34m","6":"\u001b[35m","7":"\u001b[36m","8":"\u001b[37m","0":"\u001b[0m"}
 def dispform(inpot):
 	if inpot==list(inpot):
@@ -110,8 +111,13 @@ class fpslimiter:
 					return self.fps
 
 def intro():
-	os.system("cls")
+	if os.name=="nt":
+		os.system("cls")
+	else:
+		os.system("clear")
 	r=graphic()
+	black="██"
+	white="  "
 	r.content=[[black*3+white+black+white+black*5+white*2+black+white+black*5+white+black*2],[black+white+black+white*8+black+white+black+white*8+black],[black*2+white*2+black+white+black*4+white+black+white+black+white+black*5+white+black+white],[black+white+black+white+black+white*6+black+white+black+white*8+black],[black+white+black+white+black+white+black*5+white*2+black*3+white+black*3+white*2+black]]
 	r.display()
 	time.sleep(1)

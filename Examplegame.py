@@ -2,7 +2,7 @@ import rgraphics
 import os
 import random
 import asyncio
-#rgraphics.intro()
+rgraphics.intro()
 screen=rgraphics.graphic()
 os.system("clear")
 fp=rgraphics.fpslimiter()
@@ -20,10 +20,10 @@ ball.posy=random.randrange(5,30)
 ball.speedx=1
 ball.speedy=1
 while True:
-	#fp.start()
+	fp.start()
 	asyncio.run(screen.clear("L"))
 	ball.move()
 	ball.stayin(screen,"bounce")
 	ball.draw(screen)
 	screen.display(colouring=True)
-	#fp.end(60)
+	fp.end(60)
