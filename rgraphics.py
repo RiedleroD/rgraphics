@@ -70,6 +70,7 @@ class graphic():
 			sys.stdout.flush()
 			rows, columns=os.popen('stty size', 'r').read().split()
 	def display(self):
+		changes2write=[]
 		try:
 			bg=self.bg
 			for row in range(len(self.content)):
@@ -77,10 +78,10 @@ class graphic():
 				rowcontent=self.content[row]
 				for col in range(len(rowcontent)):
 					if rowcontent[col]!=self.prevcontent[row][col]:
-						position="\033["+rowstr+str((col*2)+1)+"H"
-						sys.stdout.write(colr.rst+position+rowcontent[col]+colr.rst)
+						changes2write+=colr.rst+"\033["+rowstr+str((col*2)+1)+"H"+rowcontent[col]+colr.rst)
 						self.prevcontent[row][col]=rowcontent[col]
 					self.content[row][col]=bg
+			sys.stdout.write(changes2write)
 			sys.stdout.flush()
 		except KeyboardInterrupt:
 			clearscreen()
